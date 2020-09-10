@@ -18,15 +18,17 @@ import org.geogebra.web.html5.gawt.GBufferedImageW;
 import com.google.gwt.canvas.dom.client.ImageData;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.ImageElement;
-import com.googlecode.gwtgl.array.Uint8Array;
-import com.googlecode.gwtgl.binding.WebGLBuffer;
-import com.googlecode.gwtgl.binding.WebGLFramebuffer;
-import com.googlecode.gwtgl.binding.WebGLProgram;
-import com.googlecode.gwtgl.binding.WebGLRenderbuffer;
-import com.googlecode.gwtgl.binding.WebGLRenderingContext;
-import com.googlecode.gwtgl.binding.WebGLShader;
-import com.googlecode.gwtgl.binding.WebGLTexture;
-import com.googlecode.gwtgl.binding.WebGLUniformLocation;
+
+import elemental2.core.Uint8Array;
+import elemental2.webgl.WebGLBuffer;
+import elemental2.webgl.WebGLFramebuffer;
+import elemental2.webgl.WebGLProgram;
+import elemental2.webgl.WebGLRenderbuffer;
+import elemental2.webgl.WebGLRenderingContext;
+import elemental2.webgl.WebGLShader;
+import elemental2.webgl.WebGLTexture;
+import elemental2.webgl.WebGLUniformLocation;
+import jsinterop.base.Js;
 
 /**
  * Renderer using shaders
@@ -36,7 +38,7 @@ import com.googlecode.gwtgl.binding.WebGLUniformLocation;
  */
 public class RendererImplShadersW extends RendererImplShaders {
 
-	private static final int GL_TYPE_DRAW_TO_BUFFER = WebGLRenderingContext.STREAM_DRAW;
+	private static final double GL_TYPE_DRAW_TO_BUFFER = WebGLRenderingContext.STREAM_DRAW;
 	private WebGLRenderingContext glContext;
 	private ArrayList<WebGLTexture> texturesArray = new ArrayList<>();
 	private WebGLBuffer[] vboHandles;
@@ -76,8 +78,8 @@ public class RendererImplShadersW extends RendererImplShaders {
 		glContext.shaderSource(shader, source);
 		glContext.compileShader(shader);
 
-		if (!glContext.getShaderParameterb(shader,
-				WebGLRenderingContext.COMPILE_STATUS)) {
+		if (Js.isFalsy(glContext.getShaderParameter(shader,
+				(int) WebGLRenderingContext.COMPILE_STATUS))) {
 			Log.debug("ERROR COMPILING SHADER: "
 					+ glContext.getShaderInfoLog(shader));
 			throw new RuntimeException(glContext.getShaderInfoLog(shader));
@@ -89,10 +91,10 @@ public class RendererImplShadersW extends RendererImplShaders {
 	@Override
 	protected final void compileShadersProgram() {
 		setFragShader(getShader(
-				WebGLRenderingContext.FRAGMENT_SHADER,
+				(int) WebGLRenderingContext.FRAGMENT_SHADER,
 				FragmentShader.getFragmentShaderShinyForPacking(true)));
 		setVertShader(getShader(
-				WebGLRenderingContext.VERTEX_SHADER,
+				(int) WebGLRenderingContext.VERTEX_SHADER,
 				VertexShader.getVertexShaderShiny(true)));
 	}
 
@@ -117,8 +119,8 @@ public class RendererImplShadersW extends RendererImplShaders {
 	protected final void glLinkProgram() {
 		glContext.linkProgram((WebGLProgram) shaderProgram);
 
-		if (!glContext.getProgramParameterb((WebGLProgram) shaderProgram,
-				WebGLRenderingContext.LINK_STATUS)) {
+		if (Js.isFalsy(glContext.getProgramParameter((WebGLProgram) shaderProgram,
+				(int) WebGLRenderingContext.LINK_STATUS))) {
 			throw new RuntimeException("Could not initialise shaders");
 		}
 
@@ -152,24 +154,25 @@ public class RendererImplShadersW extends RendererImplShaders {
 
 	@Override
 	protected final int getGL_ELEMENT_ARRAY_BUFFER() {
-		return WebGLRenderingContext.ELEMENT_ARRAY_BUFFER;
+		return (int) WebGLRenderingContext.ELEMENT_ARRAY_BUFFER;
 	}
 
 	@Override
 	protected final int getGL_ARRAY_BUFFER() {
-		return WebGLRenderingContext.ARRAY_BUFFER;
+		return (int) WebGLRenderingContext.ARRAY_BUFFER;
 	}
 
 	@Override
 	protected void vertexAttribPointer(int attrib, int size) {
 		glContext.vertexAttribPointer(attrib, size,
-				WebGLRenderingContext.FLOAT,
+				(int) WebGLRenderingContext.FLOAT,
 				false, 0, 0);
 	}
 
 	@Override
 	protected void glUniform3fv(Object location, float[] values) {
-		glContext.uniform3fv((WebGLUniformLocation) location, values);
+		glContext.uniform3fv((WebGLUniformLocation) location,
+				WebGLRenderingContext.Uniform3fvValueUnionType.of(values));
 	}
 
 	@Override
@@ -185,52 +188,46 @@ public class RendererImplShadersW extends RendererImplShaders {
 
 	@Override
 	protected void glBufferData(int numBytes, GLBuffer fb) {
-		glContext.bufferData(WebGLRenderingContext.ARRAY_BUFFER,
-				((GLBufferW) fb).getBuffer(), GL_TYPE_DRAW_TO_BUFFER);
+		glContext.bufferData((int) WebGLRenderingContext.ARRAY_BUFFER,
+				((GLBufferW) fb).getBuffer(), (int) GL_TYPE_DRAW_TO_BUFFER);
 	}
 
 	@Override
 	protected void glBufferDataIndices(int numBytes, GLBufferIndices arrayI) {
 		glContext
-				.bufferData(WebGLRenderingContext.ELEMENT_ARRAY_BUFFER,
+				.bufferData((int) WebGLRenderingContext.ELEMENT_ARRAY_BUFFER,
 						((GLBufferIndicesW) arrayI).getBuffer(),
-						GL_TYPE_DRAW_TO_BUFFER);
+						(int) GL_TYPE_DRAW_TO_BUFFER);
 	}
 
 	@Override
 	public void draw(Manager.Type type, int length) {
 		glContext.drawElements(getGLType(type), length,
-				WebGLRenderingContext.UNSIGNED_SHORT, 0);
+				(int) WebGLRenderingContext.UNSIGNED_SHORT, 0);
 	}
 
 	@Override
 	protected int getGLType(Type type) {
 		switch (type) {
 		case TRIANGLE_STRIP:
-			return WebGLRenderingContext.TRIANGLE_STRIP;
+			return (int) WebGLRenderingContext.TRIANGLE_STRIP;
 		case TRIANGLE_FAN:
-			// if (Browser.supportsWebGLTriangleFan()) { // no TRIANGLE_FAN for
-			// internet explorer
-			// return WebGLRenderingContext.TRIANGLE_FAN;
-			// }
-
-			// wait for fix : detect webGL support correctly
-			return WebGLRenderingContext.TRIANGLE_STRIP;
+			return (int) WebGLRenderingContext.TRIANGLE_STRIP;
 		case TRIANGLES:
-			return WebGLRenderingContext.TRIANGLES;
+			return (int) WebGLRenderingContext.TRIANGLES;
 		case LINE_LOOP:
-			return WebGLRenderingContext.LINE_LOOP;
+			return (int) WebGLRenderingContext.LINE_LOOP;
 		case LINE_STRIP:
-			return WebGLRenderingContext.LINE_STRIP;
+			return (int) WebGLRenderingContext.LINE_STRIP;
 		}
 
-		return WebGLRenderingContext.TRIANGLES;
+		return (int) WebGLRenderingContext.TRIANGLES;
 	}
 
 	@Override
 	protected final void glUniformMatrix4fv(Object location, float[] values) {
 		glContext.uniformMatrix4fv((WebGLUniformLocation) location, false,
-				values);
+				Js.<double[]>uncheckedCast(values));
 	}
 
 	@Override
@@ -264,12 +261,14 @@ public class RendererImplShadersW extends RendererImplShaders {
 
 	@Override
 	protected final void glUniform4fv(Object location, float[] values) {
-		glContext.uniform4fv((WebGLUniformLocation) location, values);
+		glContext.uniform4fv((WebGLUniformLocation) location,
+				WebGLRenderingContext.Uniform4fvValueUnionType.of(values));
 	}
 
 	@Override
 	protected final void glUniform2fv(Object location, float[] values) {
-		glContext.uniform2fv((WebGLUniformLocation) location, values);
+		glContext.uniform2fv((WebGLUniformLocation) location,
+				WebGLRenderingContext.Uniform2fvValueUnionType.of(values));
 	}
 
 	@Override
@@ -289,7 +288,7 @@ public class RendererImplShadersW extends RendererImplShaders {
 
 	@Override
 	protected void glUniform1fv(Object location, int length, float[] values) {
-		glContext.uniform1fv((WebGLUniformLocation) location, values);
+		glContext.uniform1fv((WebGLUniformLocation) location, Js.<double[]>uncheckedCast(values));
 	}
 
 	@Override
@@ -304,12 +303,12 @@ public class RendererImplShadersW extends RendererImplShaders {
 
 	@Override
 	protected final int getGL_FRONT() {
-		return WebGLRenderingContext.FRONT;
+		return (int) WebGLRenderingContext.FRONT;
 	}
 
 	@Override
 	protected final int getGL_BACK() {
-		return WebGLRenderingContext.BACK;
+		return (int) WebGLRenderingContext.BACK;
 	}
 
 	@Override
@@ -358,7 +357,7 @@ public class RendererImplShadersW extends RendererImplShaders {
 
 	@Override
 	public void bindTexture(int index) {
-		glContext.bindTexture(WebGLRenderingContext.TEXTURE_2D,
+		glContext.bindTexture((int) WebGLRenderingContext.TEXTURE_2D,
 				texturesArray.get(index));
 	}
 
@@ -384,12 +383,12 @@ public class RendererImplShadersW extends RendererImplShaders {
 
 	@Override
 	public int getGL_BLEND() {
-		return WebGLRenderingContext.BLEND;
+		return (int) WebGLRenderingContext.BLEND;
 	}
 
 	@Override
 	public int getGL_CULL_FACE() {
-		return WebGLRenderingContext.CULL_FACE;
+		return (int) WebGLRenderingContext.CULL_FACE;
 	}
 
 	@Override
@@ -399,17 +398,17 @@ public class RendererImplShadersW extends RendererImplShaders {
 
 	@Override
 	public int getGL_COLOR_BUFFER_BIT() {
-		return WebGLRenderingContext.COLOR_BUFFER_BIT;
+		return (int) WebGLRenderingContext.COLOR_BUFFER_BIT;
 	}
 
 	@Override
 	public int getGL_DEPTH_BUFFER_BIT() {
-		return WebGLRenderingContext.DEPTH_BUFFER_BIT;
+		return (int) WebGLRenderingContext.DEPTH_BUFFER_BIT;
 	}
 
 	@Override
 	public int getGL_DEPTH_TEST() {
-		return WebGLRenderingContext.DEPTH_TEST;
+		return (int) WebGLRenderingContext.DEPTH_TEST;
 	}
 
 	/**
@@ -460,14 +459,14 @@ public class RendererImplShadersW extends RendererImplShaders {
 			texture = texturesArray.get(newIndex);
 		}
 
-		glContext.bindTexture(WebGLRenderingContext.TEXTURE_2D, texture);
+		glContext.bindTexture((int) WebGLRenderingContext.TEXTURE_2D, texture);
 		JavaScriptObject data = image == null
 				? bimg.getCanvas().getCanvasElement() : image;
-		glContext.texImage2D(WebGLRenderingContext.TEXTURE_2D, 0,
-				WebGLRenderingContext.RGBA, WebGLRenderingContext.RGBA,
-				WebGLRenderingContext.UNSIGNED_BYTE, data);
+		glContext.texImage2D((int) WebGLRenderingContext.TEXTURE_2D, 0,
+				(int) WebGLRenderingContext.RGBA, (int) WebGLRenderingContext.RGBA,
+				(int) WebGLRenderingContext.UNSIGNED_BYTE, Js.<elemental2.dom.ImageData>uncheckedCast(data));
 
-		glContext.generateMipmap(WebGLRenderingContext.TEXTURE_2D);
+		glContext.generateMipmap((int) WebGLRenderingContext.TEXTURE_2D);
 
 		return newIndex;
 	}
@@ -492,16 +491,16 @@ public class RendererImplShadersW extends RendererImplShaders {
 		texturesArray.add(texture);
 
 		// create array with alpha channel
-		Uint8Array array = Uint8Array.create(buf.length * 4);
+		Uint8Array array = new Uint8Array(buf.length * 4);
 		for (int i = 0; i < buf.length; i++) {
-			array.set(i * 4 + 3, buf[i]);
+			array.setAt(i * 4 + 3, (double) buf[i]);
 		}
 		
-		glContext.bindTexture(WebGLRenderingContext.TEXTURE_2D, texture);
-		glContext.texImage2D(WebGLRenderingContext.TEXTURE_2D, 0,
-				WebGLRenderingContext.RGBA, sizeX, sizeY, 0,
-				WebGLRenderingContext.RGBA, WebGLRenderingContext.UNSIGNED_BYTE, array);
-		glContext.generateMipmap(WebGLRenderingContext.TEXTURE_2D);
+		glContext.bindTexture((int) WebGLRenderingContext.TEXTURE_2D, texture);
+		glContext.texImage2D((int) WebGLRenderingContext.TEXTURE_2D, 0,
+				(int) WebGLRenderingContext.RGBA, sizeX, sizeY, 0,
+				(int) WebGLRenderingContext.RGBA, (int) WebGLRenderingContext.UNSIGNED_BYTE, array);
+		glContext.generateMipmap((int) WebGLRenderingContext.TEXTURE_2D);
 
 		return newIndex;
 	}
@@ -539,13 +538,13 @@ public class RendererImplShadersW extends RendererImplShaders {
 
 	@Override
 	protected void bindFramebuffer(Object id) {
-		getGL().bindFramebuffer(WebGLRenderingContext.FRAMEBUFFER,
+		getGL().bindFramebuffer((int) WebGLRenderingContext.FRAMEBUFFER,
 				(WebGLFramebuffer) id);
 	}
 
 	@Override
 	protected void bindRenderbuffer(Object id) {
-		getGL().bindRenderbuffer(WebGLRenderingContext.RENDERBUFFER,
+		getGL().bindRenderbuffer((int) WebGLRenderingContext.RENDERBUFFER,
 				(WebGLRenderbuffer) id);
 	}
 
@@ -561,26 +560,26 @@ public class RendererImplShadersW extends RendererImplShaders {
 
 	@Override
 	protected void textureParametersNearest() {
-		getGL().texParameterf(WebGLRenderingContext.TEXTURE_2D,
-				WebGLRenderingContext.TEXTURE_MAG_FILTER,
+		getGL().texParameterf((int) WebGLRenderingContext.TEXTURE_2D,
+				(int) WebGLRenderingContext.TEXTURE_MAG_FILTER,
 				WebGLRenderingContext.NEAREST);
-		getGL().texParameterf(WebGLRenderingContext.TEXTURE_2D,
-				WebGLRenderingContext.TEXTURE_MIN_FILTER,
+		getGL().texParameterf((int) WebGLRenderingContext.TEXTURE_2D,
+				(int) WebGLRenderingContext.TEXTURE_MIN_FILTER,
 				WebGLRenderingContext.NEAREST);
 	}
 
 	@Override
 	protected void textureImage2DForBuffer(int width, int height) {
-		getGL().texImage2D(WebGLRenderingContext.TEXTURE_2D, 0,
-				WebGLRenderingContext.RGBA, width, height, 0,
-				WebGLRenderingContext.RGBA,
-				WebGLRenderingContext.UNSIGNED_BYTE, null);
+		getGL().texImage2D((int) WebGLRenderingContext.TEXTURE_2D, 0,
+				(int) WebGLRenderingContext.RGBA, width, height, 0,
+				(int) WebGLRenderingContext.RGBA,
+				(int) WebGLRenderingContext.UNSIGNED_BYTE, null);
 	}
 
 	@Override
 	protected void renderbufferStorage(int width, int height) {
-		getGL().renderbufferStorage(WebGLRenderingContext.RENDERBUFFER,
-				WebGLRenderingContext.DEPTH_COMPONENT, width, height);
+		getGL().renderbufferStorage((int) WebGLRenderingContext.RENDERBUFFER,
+				(int) WebGLRenderingContext.DEPTH_COMPONENT, width, height);
 	}
 
 	@Override
@@ -595,19 +594,19 @@ public class RendererImplShadersW extends RendererImplShaders {
 
 	@Override
 	protected void framebuffer(Object colorId, Object depthId) {
-		getGL().framebufferTexture2D(WebGLRenderingContext.FRAMEBUFFER,
-				WebGLRenderingContext.COLOR_ATTACHMENT0,
-				WebGLRenderingContext.TEXTURE_2D, (WebGLTexture) colorId, 0);
-		getGL().framebufferRenderbuffer(WebGLRenderingContext.FRAMEBUFFER,
-				WebGLRenderingContext.DEPTH_ATTACHMENT,
-				WebGLRenderingContext.RENDERBUFFER, (WebGLRenderbuffer) depthId);
+		getGL().framebufferTexture2D((int) WebGLRenderingContext.FRAMEBUFFER,
+				(int) WebGLRenderingContext.COLOR_ATTACHMENT0,
+				(int) WebGLRenderingContext.TEXTURE_2D, (WebGLTexture) colorId, 0);
+		getGL().framebufferRenderbuffer((int) WebGLRenderingContext.FRAMEBUFFER,
+				(int) WebGLRenderingContext.DEPTH_ATTACHMENT,
+				(int) WebGLRenderingContext.RENDERBUFFER, (WebGLRenderbuffer) depthId);
 	}
 
 	@Override
 	protected boolean checkFramebufferStatus() {
 		return getGL()
 				.checkFramebufferStatus(
-				WebGLRenderingContext.FRAMEBUFFER) == WebGLRenderingContext.FRAMEBUFFER_COMPLETE;
+						(int) WebGLRenderingContext.FRAMEBUFFER) == WebGLRenderingContext.FRAMEBUFFER_COMPLETE;
 	}
 
 	@Override

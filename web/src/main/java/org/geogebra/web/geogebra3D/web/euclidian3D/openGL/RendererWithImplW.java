@@ -20,7 +20,8 @@ import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
-import com.googlecode.gwtgl.binding.WebGLRenderingContext;
+
+import elemental2.webgl.WebGLRenderingContext;
 
 /**
  * 
@@ -140,46 +141,46 @@ public class RendererWithImplW extends Renderer implements
 
 	@Override
 	public void setTextureLinear() {
-		glContext.texParameteri(WebGLRenderingContext.TEXTURE_2D,
-				WebGLRenderingContext.TEXTURE_MAG_FILTER,
-				WebGLRenderingContext.LINEAR);
-		glContext.texParameteri(WebGLRenderingContext.TEXTURE_2D,
-				WebGLRenderingContext.TEXTURE_MIN_FILTER,
-				WebGLRenderingContext.LINEAR);
-		glContext.texParameteri(WebGLRenderingContext.TEXTURE_2D,
-				WebGLRenderingContext.TEXTURE_WRAP_S,
-				WebGLRenderingContext.CLAMP_TO_EDGE); // prevent repeating the
+		glContext.texParameteri((int) WebGLRenderingContext.TEXTURE_2D,
+				(int) WebGLRenderingContext.TEXTURE_MAG_FILTER,
+				(int) WebGLRenderingContext.LINEAR);
+		glContext.texParameteri((int) WebGLRenderingContext.TEXTURE_2D,
+				(int) WebGLRenderingContext.TEXTURE_MIN_FILTER,
+				(int) WebGLRenderingContext.LINEAR);
+		glContext.texParameteri((int) WebGLRenderingContext.TEXTURE_2D,
+				(int) WebGLRenderingContext.TEXTURE_WRAP_S,
+				(int) WebGLRenderingContext.CLAMP_TO_EDGE); // prevent repeating the
 														// texture
-		glContext.texParameteri(WebGLRenderingContext.TEXTURE_2D,
-				WebGLRenderingContext.TEXTURE_WRAP_T,
-				WebGLRenderingContext.CLAMP_TO_EDGE); // prevent repeating the
+		glContext.texParameteri((int) WebGLRenderingContext.TEXTURE_2D,
+				(int) WebGLRenderingContext.TEXTURE_WRAP_T,
+				(int) WebGLRenderingContext.CLAMP_TO_EDGE); // prevent repeating the
 														// texture
 	}
 
 	@Override
 	public void setTextureNearest() {
-		glContext.texParameteri(WebGLRenderingContext.TEXTURE_2D,
-				WebGLRenderingContext.TEXTURE_MAG_FILTER,
-				WebGLRenderingContext.NEAREST);
-		glContext.texParameteri(WebGLRenderingContext.TEXTURE_2D,
-				WebGLRenderingContext.TEXTURE_MIN_FILTER,
-				WebGLRenderingContext.NEAREST);
+		glContext.texParameteri((int) WebGLRenderingContext.TEXTURE_2D,
+				(int) WebGLRenderingContext.TEXTURE_MAG_FILTER,
+				(int) WebGLRenderingContext.NEAREST);
+		glContext.texParameteri((int) WebGLRenderingContext.TEXTURE_2D,
+				(int) WebGLRenderingContext.TEXTURE_MIN_FILTER,
+				(int) WebGLRenderingContext.NEAREST);
 	}
 
 	@Override
 	protected void setDepthFunc() {
-		glContext.depthFunc(WebGLRenderingContext.LEQUAL);
+		glContext.depthFunc((int) WebGLRenderingContext.LEQUAL);
 	}
 
 	@Override
 	protected void enablePolygonOffsetFill() {
-		glContext.enable(WebGLRenderingContext.POLYGON_OFFSET_FILL);
+		glContext.enable((int) WebGLRenderingContext.POLYGON_OFFSET_FILL);
 	}
 
 	@Override
 	protected void setBlendFunc() {
-		glContext.blendFunc(WebGLRenderingContext.SRC_ALPHA,
-				WebGLRenderingContext.ONE_MINUS_SRC_ALPHA);
+		glContext.blendFunc((int) WebGLRenderingContext.SRC_ALPHA,
+				(int) WebGLRenderingContext.ONE_MINUS_SRC_ALPHA);
 	}
 
 	@Override

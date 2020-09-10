@@ -4,8 +4,6 @@
   <inherits name='org.geogebra.web.Html5'/>
   <inherits name='org.geogebra.web.Keyboard' />
   <inherits name='org.geogebra.keyboard.KeyboardWeb'/>
-  <!-- webGL -->
-  <inherits name='com.googlecode.gwtgl.binding'/>
     
   <!-- Specify the app entry point class.                         -->
   <entry-point class='org.geogebra.web.web.Web'/>

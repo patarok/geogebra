@@ -12,7 +12,8 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.ScriptElement;
 import com.google.gwt.user.client.Window;
-import com.googlecode.gwtgl.binding.WebGLRenderingContext;
+
+import elemental2.webgl.WebGLRenderingContext;
 
 /**
  * web renderer for zSpace
@@ -163,7 +164,7 @@ public class RendererWithImplZSpaceW extends RendererWithImplW {
 		zSpace.zspaceRightView();
 		// this is needed to set correctly the right buffer after drawing the left one
 		// TODO check why
-		glContext.bindTexture(WebGLRenderingContext.TEXTURE_2D, null);
+		glContext.bindTexture((int) WebGLRenderingContext.TEXTURE_2D, null);
 	}
 
 }
