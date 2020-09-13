@@ -2767,15 +2767,15 @@ public class GeoGebraCasIntegrationTest extends BaseCASIntegrationTest {
 
 	@Test
 	public void rawTest() {
-		for (int i = 0; i < 5000; i++) {
-			String check = null;
+		for (int i = 0; i < 100; i++) {
+			String casResult = null;
 			try {
-				check = kernel.getGeoGebraCAS().getCurrentCAS()
+				casResult = kernel.getGeoGebraCAS().getCurrentCAS()
 						.evaluateRaw("normal(sqrt(1+x)*sqrt(1-x)-sqrt(1-x^2))");
 			} catch (Throwable throwable) {
 				throwable.printStackTrace();
 			}
-			Assert.assertEquals("Failed at " + i, "0", check);
+			Assert.assertEquals("Failed at " + i, "0", casResult);
 		}
 	}
 }
