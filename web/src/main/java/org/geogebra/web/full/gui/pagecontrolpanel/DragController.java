@@ -6,8 +6,7 @@ import org.geogebra.common.main.App;
 import org.geogebra.common.plugin.Event;
 import org.geogebra.common.plugin.EventType;
 import org.geogebra.web.html5.gui.util.CancelEventTimer;
-
-import com.google.gwt.user.client.Timer;
+import org.gwtproject.timer.client.Timer;
 
 /**
  * Class
