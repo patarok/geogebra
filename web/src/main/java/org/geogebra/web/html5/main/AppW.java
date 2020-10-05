@@ -1082,7 +1082,7 @@ public abstract class AppW extends App implements SetLabels, HasLanguage {
 	/**
 	 * Reset the UI.
 	 */
-	protected void resetUI() {
+	public void resetUI() {
 		kernel.getInputPreviewHelper().clear();
 		clearInputBar();
 		if (!isUnbundled() && isPortrait()) {
@@ -3318,27 +3318,33 @@ public abstract class AppW extends App implements SetLabels, HasLanguage {
 
 	@Override
 	public boolean isUnbundled() {
-		return AppConfigDefault
-				.isUnbundledOrNotes(appletParameters.getDataParamAppName())
-				&& !"notes".equals(appletParameters.getDataParamAppName());
-
+		return AppConfigDefault.isUnbundled(getConfig().getAppCode());
 	}
 
 	@Override
 	public boolean isUnbundledGraphing() {
-		return "graphing".equals(appletParameters.getDataParamAppName());
+		return "graphing".equals(getSubAppCode());
 	}
 
 	@Override
 	public boolean isUnbundledGeometry() {
-		return "geometry".equals(appletParameters.getDataParamAppName());
+		return "geometry".equals(getSubAppCode());
 	}
 
 	/**
 	 * @return whether we are running 3D grapher
 	 */
 	public boolean isUnbundled3D() {
-		return "3d".equals(appletParameters.getDataParamAppName());
+		return "3d".equals(getSubAppCode());
+	}
+
+	/**
+	 * @return the sub app code, if it exists, or the app code
+	 */
+	private String getSubAppCode() {
+		return getConfig().getSubAppCode() != null
+				? getConfig().getSubAppCode()
+				: getConfig().getAppCode();
 	}
 
 	/**

@@ -40,33 +40,37 @@ public class CalculatorSwitcherDialog extends GPopupPanel implements Persistable
 
 		SvgPerspectiveResources res = SvgPerspectiveResources.INSTANCE;
 		StandardButton btnGraphing = buildCalcButton(res.menu_icon_algebra_transparent(),
-				"GraphingCalculator.short");
+				"graphing", "GraphingCalculator.short");
 		contentPanel.add(btnGraphing);
-		selectedBtn = btnGraphing;
 
 		StandardButton btn3D = buildCalcButton(res.menu_icon_graphics3D_transparent(),
-				"GeoGebra3DGrapher.short");
+				"3d", "GeoGebra3DGrapher.short");
 		contentPanel.add(btn3D);
 
 		StandardButton btnGeometry = buildCalcButton(res.menu_icon_geometry_transparent(),
-				"Geometry");
+				"geometry", "Geometry");
 		contentPanel.add(btnGeometry);
 
 		StandardButton btnCAS = buildCalcButton(res.cas_white_bg(),
-				"CAS");
+				"cas", "CAS");
 		contentPanel.add(btnCAS);
 
 		add(contentPanel);
 	}
 
-	private StandardButton buildCalcButton(SVGResource icon, String appNameKey) {
+	private StandardButton buildCalcButton(SVGResource icon, String subAppCode,
+			String appNameKey) {
 		 StandardButton button =  new StandardButton(app, 72, icon,
 				 app.getLocalization().getMenu(appNameKey));
 		button.setStyleName("calcBtn");
-		button.addFastClickHandler(source -> {
-			selectedBtn.removeStyleName("selected");
+		if (subAppCode.equals(app.getConfig().getSubAppCode())) {
 			button.addStyleName("selected");
-			selectedBtn = button;
+		}
+
+		button.addFastClickHandler(source -> {
+			hide();
+			app.getConfig().setSubAppCode(subAppCode);
+			((AppW) app).resetUI();
 		});
 		return button;
 	}

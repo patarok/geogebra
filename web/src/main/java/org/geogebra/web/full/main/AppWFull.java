@@ -554,7 +554,7 @@ public class AppWFull extends AppW implements HasKeyboard, MenuViewListener {
 	}
 
 	@Override
-	protected void resetUI() {
+	public void resetUI() {
 		resetEVs();
 		// make sure file->new->probability does not clear the prob. calc
 		if (getGuiManager() != null
