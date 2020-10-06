@@ -66,27 +66,27 @@ public class ParserFunctionsFactory {
 	}
 
 	private static void addFunctions(ParserFunctionsImpl pf) {
-		put(pf, 1, "sin", Operation.SIN);
-		put(pf, 1, "cos", Operation.COS);
-		put(pf, 1, "tan", Operation.TAN);
-		put(pf, 1, "csc", Operation.CSC);
-		put(pf, 1, "sec", Operation.SEC);
-		put(pf, 1, "cot", Operation.COT);
+		put(pf, 1, "sin", Operation.SIN, null);
+		put(pf, 1, "cos", Operation.COS, null);
+		put(pf, 1, "tan", Operation.TAN, null);
+		put(pf, 1, "csc", Operation.CSC, null);
+		put(pf, 1, "sec", Operation.SEC, null);
+		put(pf, 1, "cot", Operation.COT, null);
 
-		put(pf, 1, "sinh", Operation.SINH);
-		put(pf, 1, "cosh", Operation.COSH);
-		put(pf, 1, "tanh", Operation.TANH);
-		put(pf, 1, "csch", Operation.CSCH);
-		put(pf, 1, "sech", Operation.SECH);
-		put(pf, 1, "coth", Operation.COTH);
+		put(pf, 1, "sinh", Operation.SINH, null);
+		put(pf, 1, "cosh", Operation.COSH, null);
+		put(pf, 1, "tanh", Operation.TANH, null);
+		put(pf, 1, "csch", Operation.CSCH, null);
+		put(pf, 1, "sech", Operation.SECH, null);
+		put(pf, 1, "coth", Operation.COTH, null);
 
-		put(pf, 1, "asind", Operation.ARCSIND);
+		put(pf, 1, "asind", Operation.ARCSIND, null);
 		put(pf, 1, "arcsind", Operation.ARCSIND);
 
-		put(pf, 1, "acosd", Operation.ARCCOSD);
+		put(pf, 1, "acosd", Operation.ARCCOSD, null);
 		put(pf, 1, "arccosd", Operation.ARCCOSD);
 
-		put(pf, 1, "atand", Operation.ARCTAND);
+		put(pf, 1, "atand", Operation.ARCTAND, null);
 		put(pf, 1, "arctand", Operation.ARCTAND);
 
 		put(pf, 2, "atan2d", Operation.ARCTAN2D, "( <y>, <x> )");
@@ -169,18 +169,18 @@ public class ParserFunctionsFactory {
 		put(pf, 1, "ceil", Operation.CEIL);
 		put(pf, 1, "round", Operation.ROUND);
 		put(pf, 2, "round", Operation.ROUND2, "( <x>, <y> )");
-		put(pf, 1, "conjugate", Operation.CONJUGATE);
+		put(pf, 1, "conjugate", Operation.CONJUGATE, null);
 
 		put(pf, 0, "random", Operation.RANDOM, "()");
 		put(pf, 1, "x", Operation.XCOORD, null);
 		put(pf, 1, "y", Operation.YCOORD, null);
 		put(pf, 1, "z", Operation.ZCOORD, null);
 
-		put(pf, 2, "nroot", Operation.NROOT, "( <x>, <n> )");
+		put(pf, 2, "nroot", Operation.NROOT, null);
 		put(pf, 2, "NRoot", Operation.NROOT, null);
 
 		put(pf, 1, "fractionalpart", Operation.FRACTIONAL_PART, null);
-		put(pf, 1, "fractionalPart", Operation.FRACTIONAL_PART);
+		put(pf, 1, "fractionalPart", Operation.FRACTIONAL_PART, null);
 
 		put(pf, 2, "ggbdiff", Operation.DIFF, null);
 		put(pf, 3, "ggbdiff", Operation.DIFF, null);
@@ -196,12 +196,12 @@ public class ParserFunctionsFactory {
 	}
 
 	private static void addInputBoxExcludedFunctions(ParserFunctionsImpl pf) {
-		put(pf, 1, "atanh", Operation.ATANH);
-		put(pf, 1, "acosh", Operation.ACOSH);
-		put(pf, 1, "asinh", Operation.ASINH);
-		put(pf, 1, "atan", Operation.ARCTAN);
-		put(pf, 1, "acos", Operation.ARCCOS);
-		put(pf, 1, "asin", Operation.ARCSIN);
+		put(pf, 1, "atanh", Operation.ATANH, null);
+		put(pf, 1, "acosh", Operation.ACOSH, null);
+		put(pf, 1, "asinh", Operation.ASINH, null);
+		put(pf, 1, "atan", Operation.ARCTAN, null);
+		put(pf, 1, "acos", Operation.ARCCOS, null);
+		put(pf, 1, "asin", Operation.ARCSIN, null);
 
 		put(pf, 1, "cosech", Operation.CSCH);
 		put(pf, 1, "cotanh", Operation.COTH);
@@ -214,8 +214,8 @@ public class ParserFunctionsFactory {
 		put(pf, 1, "lg", Operation.LOG10);
 		put(pf, 1, "log10", Operation.LOG10);
 
-		put(pf, 1, "real", Operation.REAL);
-		put(pf, 1, "imaginary", Operation.IMAGINARY);
+		put(pf, 1, "real", Operation.REAL, null);
+		put(pf, 1, "imaginary", Operation.IMAGINARY, null);
 	}
 
 	private static void put(ParserFunctionsImpl pf, int size, String name,

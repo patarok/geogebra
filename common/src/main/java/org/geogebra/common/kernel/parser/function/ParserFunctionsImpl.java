@@ -147,4 +147,12 @@ class ParserFunctionsImpl implements ParserFunctions {
 		}
 		return op;
 	}
+
+	@Override
+	public String toEditorAutocomplete(String text, Localization loc) {
+		if (text.equals(loc.getFunction("nroot") + "( <x>, <n> )")) {
+			return "nroot(";
+		}
+		return text;
+	}
 }
