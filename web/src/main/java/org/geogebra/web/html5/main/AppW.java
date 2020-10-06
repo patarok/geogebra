@@ -1651,7 +1651,7 @@ public abstract class AppW extends App implements SetLabels, HasLanguage {
 	 * Initializes Kernel, EuclidianView, EuclidianSettings, etc..
 	 *
 	 */
-	protected void initCoreObjects() {
+	public void initCoreObjects() {
 		kernel = newKernel(this);
 
 		initSettings();
@@ -1694,21 +1694,13 @@ public abstract class AppW extends App implements SetLabels, HasLanguage {
 			getSettings().getCasSettings().setEnabled(
 					getAppletParameters().getDataParamEnableCAS(false));
 		}
-		if (getSettings().getCasSettings().isEnabled()
-				&& has(Feature.SYMBOLIC_AV)) {
+		if (getSettings().getCasSettings().isEnabled()) {
 			getKernel().setSymbolicMode(getConfig().getSymbolicMode());
 		}
 
-		if (is3DDisabledForApp()) {
-			if (getSettings().getEuclidian(-1) != null) {
-				getSettings().getEuclidian(-1).setEnabled(false);
-			}
-		} else if (getAppletParameters().getDataParamEnable3D(false)
-				|| !getAppletParameters().getDataParamEnable3D(true)) {
-			if (getSettings().supports3D()) {
-				getSettings().getEuclidian(-1).setEnabled(
-						getAppletParameters().getDataParamEnable3D(false));
-			}
+		if (getSettings().getEuclidian(-1) != null) {
+			getSettings().getEuclidian(-1)
+					.setEnabled(getAppletParameters().getDataParamEnable3D(true));
 		}
 
 		if (getAppletParameters().getDataParamEnableGraphing(false)

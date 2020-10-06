@@ -307,6 +307,11 @@ public class AppWFull extends AppW implements HasKeyboard, MenuViewListener {
 		return activity;
 	}
 
+	public void resetActivity(String subAppCode) {
+		activity = new SuiteActivity(subAppCode);
+		activity.start(this);
+	}
+
 	private void initActivity() {
 		if (appletParameters == null || activity != null) {
 			return;
@@ -337,7 +342,7 @@ public class AppWFull extends AppW implements HasKeyboard, MenuViewListener {
 				activity = new EvaluatorActivity();
 				break;
 			case "suite":
-				activity = new SuiteActivity();
+				activity = new SuiteActivity(GeoGebraConstants.GRAPHING_APPCODE);
 				break;
 			default:
 				activity = new ClassicActivity(new AppConfigDefault());

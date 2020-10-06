@@ -98,7 +98,7 @@ public class AppWsolver extends AppW implements HasKeyboard {
 	}
 
 	@Override
-    protected void initCoreObjects() {
+	public void initCoreObjects() {
         kernel = newKernel(this);
 		initSettings();
         fontManager = new FontManagerW();
